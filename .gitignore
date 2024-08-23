@@ -9,3 +9,5 @@
 !*.yml
 !.gitattributes
 !.gitignore
+!deploy.sh
+!README.md

@@ -19,10 +19,10 @@ spec:
         verbosity: detailed
       # otlphttp/elastic: 
       #     # Elastic APM server https endpoint without the "https://" prefix
-      #     endpoint: "${env:ELASTIC_APM_SERVER_ENDPOINT}"  
+      #     endpoint: "${ELASTIC_APM_SERVER_ENDPOINT}"  
       #     headers:
       #       # Elastic APM Server secret token
-      #       Authorization: "Bearer ${env:ELASTIC_APM_SECRET_TOKEN}"
+      #       Authorization: "Bearer ${ELASTIC_APM_SECRET_TOKEN}"
 
     service:
       pipelines:
