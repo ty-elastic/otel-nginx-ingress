@@ -1,0 +1,55 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+spec:
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    processors:
+      batch: {}
+
+    exporters:
+      debug:
+        verbosity: detailed
+      # otlphttp/elastic: 
+      #     # Elastic APM server https endpoint without the "https://" prefix
+      #     endpoint: "${env:ELASTIC_APM_SERVER_ENDPOINT}"  
+      #     headers:
+      #       # Elastic APM Server secret token
+      #       Authorization: "Bearer ${env:ELASTIC_APM_SECRET_TOKEN}"
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug]
+          #exporters: [debug, otlphttp/elastic]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug]
+          #exporters: [debug, otlphttp/elastic]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug]
+          #exporters: [debug, otlphttp/elastic]
+---
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: otel-instrumentation
+spec:
+  exporter:
+    endpoint: http://otel-collector.default:4317
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
